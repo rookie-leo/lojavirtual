@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lojavirtual.app.model.enuns.OrderStatus;
 
 @Entity
 @Table(name = "tb_order")// Houve conflito com uma palavra reservada no banco de dados
@@ -23,6 +24,8 @@ public class Order {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant momento;
 	
+	private Integer status;
+	
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private Users client;
@@ -31,11 +34,12 @@ public class Order {
 		super();
 	}
 
-	public Order(Long id, Instant momento, Users client) {
+	public Order(Long id, Instant momento, Users client, OrderStatus status) {
 		super();
 		this.id = id;
 		this.momento = momento;
 		this.client = client;
+		setStatus(status);
 	}
 
 	public Long getId() {
@@ -60,6 +64,16 @@ public class Order {
 
 	public void setClient(Users client) {
 		this.client = client;
+	}
+
+	public OrderStatus getStatus() {
+		return OrderStatus.valueOf(status);
+	}
+
+	public void setStatus(OrderStatus status) {
+		if (status != null) {
+			this.status = status.getCode();
+		}
 	}
 
 	@Override

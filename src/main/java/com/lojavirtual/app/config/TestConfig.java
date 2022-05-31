@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Profile;
 
 import com.lojavirtual.app.model.Order;
 import com.lojavirtual.app.model.Users;
+import com.lojavirtual.app.model.enuns.OrderStatus;
 import com.lojavirtual.app.service.OrderService;
 import com.lojavirtual.app.service.UsersService;
 
@@ -29,16 +30,12 @@ public class TestConfig implements CommandLineRunner {
 		Users user1 = new Users(null, "Saci", "saci@email.com", "11912345678", "Saci1234");
 		Users user2 = new Users(null, "Fox", "fox@email.com", "11998765432", "Fox9876");
 		
-		Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), user1);
-		Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), user2);
-		Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), user1);
+		Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), user1, OrderStatus.SHIPPED);
+		Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), user2, OrderStatus.WAITING_PAYMENT);
+		Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), user1, OrderStatus.PAID);
 		
 		userService.saveAll(Arrays.asList(user1, user2));
 		orderService.saveAll(Arrays.asList(o1, o2, o3));
 	}
-	
-	
-	
-	
 	
 }
