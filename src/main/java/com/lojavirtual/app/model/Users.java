@@ -1,10 +1,16 @@
 package com.lojavirtual.app.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Users {
@@ -20,6 +26,10 @@ public class Users {
 	private String phone;
 	@NotBlank
 	private String password;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "client")
+	private List<Order> orders = new ArrayList<Order>();
 	
 	@Deprecated
 	public Users() {}
@@ -70,6 +80,18 @@ public class Users {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<Order> getOrders() {
+		return orders;
 	}
 
 	@Override
