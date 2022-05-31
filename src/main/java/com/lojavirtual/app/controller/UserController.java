@@ -1,21 +1,33 @@
 package com.lojavirtual.app.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lojavirtual.app.model.Users;
+import com.lojavirtual.app.service.UsersService;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
+	@Autowired
+	private UsersService service;
 	
 	@GetMapping("/listar")
-	public ResponseEntity<Users> findAll() {
-		Users user = new Users(1L, "João", "joao@email.com", "123456789", "123456");
-		
+	public ResponseEntity<List<Users>> findAll() {		
+		List<Users> users = service.findAll();
+		return ResponseEntity.ok().body(users);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Users> findById(@PathVariable Long id) {
+		Users user = service.findById(id);
 		return ResponseEntity.ok().body(user);
 	}
 	
