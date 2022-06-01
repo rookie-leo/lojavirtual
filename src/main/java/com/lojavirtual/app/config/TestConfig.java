@@ -9,10 +9,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.lojavirtual.app.model.Category;
 import com.lojavirtual.app.model.Order;
+import com.lojavirtual.app.model.OrderItem;
 import com.lojavirtual.app.model.Product;
 import com.lojavirtual.app.model.Users;
 import com.lojavirtual.app.model.enuns.OrderStatus;
 import com.lojavirtual.app.service.CategoryService;
+import com.lojavirtual.app.service.OrderItemService;
 import com.lojavirtual.app.service.OrderService;
 import com.lojavirtual.app.service.ProductService;
 import com.lojavirtual.app.service.UsersService;
@@ -25,12 +27,14 @@ public class TestConfig implements CommandLineRunner {
 	private OrderService orderService;
 	private CategoryService categoryService;
 	private ProductService productService;
+	private OrderItemService itemService;
 	
-	public TestConfig(UsersService userService, OrderService orderService, CategoryService categoryService, ProductService productService) {
+	public TestConfig(UsersService userService, OrderService orderService, CategoryService categoryService, ProductService productService, OrderItemService itemService) {
 		this.userService = userService;
 		this.orderService = orderService;
 		this.categoryService = categoryService;
 		this.productService = productService;
+		this.itemService = itemService;
 	}
 
 	@Override
@@ -68,6 +72,13 @@ public class TestConfig implements CommandLineRunner {
 		
 		userService.saveAll(Arrays.asList(user1, user2));
 		orderService.saveAll(Arrays.asList(o1, o2, o3));
+		
+		OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
+		OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice());
+		OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
+		OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
+		
+		itemService.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
 	}
 	
 }
