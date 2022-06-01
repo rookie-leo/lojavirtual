@@ -1,9 +1,15 @@
 package com.lojavirtual.app.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Category {
@@ -12,6 +18,10 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "categories") 
+	private Set<Product> products = new HashSet<Product>();
 	
 	public Category() {
 		super();
@@ -37,6 +47,10 @@ public class Category {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public Set<Product> getProducts() {
+		return products;
 	}
 
 	@Override

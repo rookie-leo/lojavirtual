@@ -13,7 +13,7 @@ import com.lojavirtual.app.model.Category;
 import com.lojavirtual.app.service.CategoryService;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/categories")
 public class CategoryController {
 
 	@Autowired
