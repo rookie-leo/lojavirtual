@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.lojavirtual.app.model.Users;
 import com.lojavirtual.app.repositories.UsersRepository;
+import com.lojavirtual.app.service.exceptions.ResourceNotFoundExceptions;
 
 @Service
 public class UsersService {
@@ -21,12 +22,8 @@ public class UsersService {
 
 	public Users findById(Long id) {
 		Optional<Users> user = repository.findById(id);
-		
-		if (user.isEmpty()) {
-			throw new RuntimeException("Identificador de usuário não encontrado");
-		}
-		
-		return user.get();
+				
+		return user.orElseThrow(() -> new ResourceNotFoundExceptions(id));
 	}
 
 	public void save(Users user) {
@@ -46,7 +43,7 @@ public class UsersService {
 	}
 	
 	public Users update(Long id, Users user) {
-		Users entity = repository.findById(id).get();
+		Users entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundExceptions(id));
 		
 		updateData(entity, user);
 		
@@ -57,7 +54,6 @@ public class UsersService {
 		entity.setName(user.getName());
 		entity.setEmail(user.getEmail());
 		entity.setPhone(user.getPhone());
-		
 	}
 
 }
