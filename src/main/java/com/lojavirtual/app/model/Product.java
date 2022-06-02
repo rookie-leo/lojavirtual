@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Product {
@@ -27,6 +30,9 @@ public class Product {
 	joinColumns = @JoinColumn(name = "category_id"),
 	inverseJoinColumns = @JoinColumn(name = "product_id"))// Configura a tabela tb_category_product no BD, e pode ser feito em qualquer q seja o lado do muitos para muitos
 	private Set<Category> categories = new HashSet<Category>();
+	
+	@OneToMany(mappedBy = "id.product")
+	private Set<OrderItem> items = new HashSet<OrderItem>();
 
 	public Product() {
 		super();
@@ -83,6 +89,17 @@ public class Product {
 
 	public Set<Category> getCategories() {
 		return categories;
+	}
+	
+	@JsonIgnore
+	public Set<Order> getOrders() {
+		Set<Order> set = new HashSet<Order>();
+		
+		for (OrderItem item : items) {
+			set.add(item.getOrder());
+		}
+		
+		return set;
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 import com.lojavirtual.app.model.Category;
 import com.lojavirtual.app.model.Order;
 import com.lojavirtual.app.model.OrderItem;
+import com.lojavirtual.app.model.Payment;
 import com.lojavirtual.app.model.Product;
 import com.lojavirtual.app.model.Users;
 import com.lojavirtual.app.model.enuns.OrderStatus;
@@ -79,6 +80,10 @@ public class TestConfig implements CommandLineRunner {
 		OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
 		
 		itemService.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+		
+		Payment payment1 = new Payment(null, Instant.parse("2019-07-22T17:21:22Z"), o3);
+		o3.setPayment(payment1);
+		orderService.save(o3);
 	}
 	
 }

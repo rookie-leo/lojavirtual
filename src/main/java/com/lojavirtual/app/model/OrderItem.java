@@ -58,6 +58,11 @@ public class OrderItem {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+	
+	public Double getSubTotal() {
+		// TODO rever se essa lógica de fato deveria estar aqui
+		return price * quantity;
+	}
 
 	@Override
 	public int hashCode() {
