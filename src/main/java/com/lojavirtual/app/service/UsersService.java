@@ -36,5 +36,9 @@ public class UsersService {
 	public void saveAll(List<Users> users) {
 		repository.saveAll(users);
 	}
+	
+	public Users insert(Users user) {
+		return repository.save(user);
+	}
 
 }
