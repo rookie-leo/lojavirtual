@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.lojavirtual.app.model.Users;
+import com.lojavirtual.app.controller.dto.request.UsersRequest;
+import com.lojavirtual.app.controller.dto.response.UsersResponse;
 import com.lojavirtual.app.service.UsersService;
 
 @RestController
@@ -26,20 +27,20 @@ public class UserController {
 	private UsersService service;
 	
 	@GetMapping("/listar")
-	public ResponseEntity<List<Users>> findAll() {		
-		List<Users> users = service.findAll();
+	public ResponseEntity<List<UsersResponse>> findAll() {		
+		List<UsersResponse> users = service.findAll();
 		return ResponseEntity.ok().body(users);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Users> findById(@PathVariable Long id) {
-		Users user = service.findById(id);
+	public ResponseEntity<UsersResponse> findById(@PathVariable Long id) {
+		UsersResponse user = service.findById(id);
 		return ResponseEntity.ok().body(user);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Users> newUser(@RequestBody Users user) {
-		user = service.insert(user);
+	public ResponseEntity<UsersResponse> newUser(@RequestBody UsersRequest request) {
+		UsersResponse user = new UsersResponse(service.save(request));
 		
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
@@ -57,8 +58,8 @@ public class UserController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Users> update(@PathVariable Long id, @RequestBody Users user) {
-		user = service.update(id, user);
+	public ResponseEntity<UsersResponse> update(@PathVariable Long id, @RequestBody UsersRequest request) {
+		UsersResponse user = service.update(id, request);
 		return ResponseEntity.ok().body(user);
 	}
 	
