@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.lojavirtual.app.model.Users;
 import com.lojavirtual.app.repositories.UsersRepository;
+import com.lojavirtual.app.service.exceptions.DataBaseException;
 import com.lojavirtual.app.service.exceptions.ResourceNotFoundExceptions;
 
 @Service
@@ -39,7 +42,13 @@ public class UsersService {
 	}
 	
 	public void delete(Long id) {
-		repository.deleteById(id);
+		try {
+			repository.deleteById(id);
+		} catch (EmptyResultDataAccessException ex) {
+			throw new ResourceNotFoundExceptions(id);
+		} catch (DataIntegrityViolationException ex) {
+			throw new DataBaseException(ex.getMessage());
+		}
 	}
 	
 	public Users update(Long id, Users user) {
